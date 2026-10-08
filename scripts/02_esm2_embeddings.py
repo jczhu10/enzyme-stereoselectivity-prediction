@@ -10,6 +10,7 @@
 首次运行会自动下载 ESM2 权重（约 140 MB）到 models/esm/。
 国内网络自动走 hf-mirror 镜像。
 """
+import argparse
 import os
 # 如直连 HuggingFace 不畅，可在运行前设置环境变量走国内镜像：
 #   PowerShell: $env:HF_ENDPOINT = "https://hf-mirror.com"
@@ -23,7 +24,6 @@ from tqdm import tqdm
 from transformers import EsmModel, EsmTokenizer
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUTS = ROOT / "outputs"
 MODELS = ROOT / "models"
 
 MODEL_NAME = "facebook/esm2_t12_35M_UR50D"  # 论文用的同款 35M 小模型，480 维
@@ -31,6 +31,11 @@ LOCAL_MODEL = MODELS / "esm2_local"           # 已下载到本地的权重目�
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--out-dir", default="outputs", help="输入输出目录名（默认 outputs；测试集用 outputs-test）")
+    args = parser.parse_args()
+
+    OUTPUTS = ROOT / args.out_dir
     input_csv = OUTPUTS / "sequences.csv"
     out_dir = OUTPUTS / "1D_embeddings"
     out_dir.mkdir(parents=True, exist_ok=True)

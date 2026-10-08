@@ -10,13 +10,13 @@
 突变写法 A93F 的含义: 序列第 93 位（从 1 开始数）的 A 被替换成 F。
 脚本会校验野生型该位置确实是 A，防止位置写错。
 """
+import argparse
 import csv
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
-OUTPUTS = ROOT / "outputs"
 
 VALID_AA = set("ACDEFGHIKLMNPQRSTVWY")  # 20 种标准氨基酸
 
@@ -54,6 +54,11 @@ def apply_mutations(wt_seq: str, muts: str) -> str:
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--out-dir", default="outputs", help="输出目录名（默认 outputs；测试集用 outputs-test）")
+    args = parser.parse_args()
+
+    OUTPUTS = ROOT / args.out_dir
     OUTPUTS.mkdir(exist_ok=True)
     input_csv = DATA / "mutations.csv"
     fasta = DATA / "wildtype.fasta"

@@ -93,7 +93,26 @@ def main():
         n_estimators=300, max_depth=20, random_state=42, n_jobs=-1
     )
     final.fit(X, y)
-    model_path = MODELS / f"rf_{args.label}.joblib"
+
+    # 模型自动编号：已有模型时新模型加 _1, _2, ... 后缀
+    # 匹配 rf_<label>.joblib（编号0）和 rf_<label>_N.joblib（编号N）
+    existing = []
+    for f in MODELS.glob(f"rf_{args.label}*.joblib"):
+        suffix = f.stem[len(f"rf_{args.label}"):]  # "" 或 "_1" 等
+        if suffix == "" or (suffix.startswith("_") and suffix[1:].isdigit()):
+            existing.append(f)
+
+    if not existing:
+        model_path = MODELS / f"rf_{args.label}.joblib"
+    else:
+        nums = [0]  # rf_<label>.joblib 视为编号 0
+        for f in existing:
+            suffix = f.stem[len(f"rf_{args.label}"):]
+            if suffix.startswith("_"):
+                nums.append(int(suffix[1:]))
+        next_num = max(nums) + 1
+        model_path = MODELS / f"rf_{args.label}_{next_num}.joblib"
+
     dump(final, model_path)
 
     print(f"OOF 预测已存: {oof_path}")

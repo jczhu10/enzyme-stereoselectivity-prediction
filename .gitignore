@@ -6,7 +6,7 @@ PLAN.md
 
 # 运行产物 / 大模型权重
 outputs/
-outputs_test/
+outputs-test/
 models/
 
 # 论文参考资料（提取文本、图片，含版权，不入库）
