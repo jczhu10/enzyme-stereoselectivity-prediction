@@ -1,0 +1,13 @@
+# 临时文件不入库
+*.log
+__pycache__/
+.ipynb_checkpoints/
+PLAN.md
+
+# 运行产物 / 大模型权重
+outputs/
+outputs_test/
+models/
+
+# 论文参考资料（提取文本、图片，含版权，不入库）
+references/

@@ -1,0 +1,8 @@
+torch==2.10.0+cu128
+transformers==4.51.3
+scikit-learn
+pandas
+numpy<2
+joblib
+matplotlib
+tqdm
